@@ -1,0 +1,1 @@
+## OCR to query sudoku board and all its cells from picture 

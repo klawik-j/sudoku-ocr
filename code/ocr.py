@@ -11,11 +11,12 @@ WAIT_TIME = 1000
 
 class Board:
     """Class of a sudoku board"""
+    MNIST_MODEL_PATH = "/home/kuba/Desktop/mnist-digits-recognition/mnist_model.h5"
 
     def __init__(self, img_path):
         self._img_path = img_path
         self.original_img = self.load_img(self._img_path)
-        self.board_thresh = self.thresholding(self.original_img)
+        self.board_thresh = self.thresholding_image(self.original_img)
         self.board_contours = self.find_board_contour(
             self.find_contours(self.board_thresh),
         )
@@ -44,8 +45,8 @@ class Board:
         return image
 
     @staticmethod
-    def thresholding(img: ndarray) -> ndarray:
-        """Function apply thresholding on image
+    def thresholding_image(img: ndarray) -> ndarray:
+        """Function apply thresholding_image on image
 
         Args:
             img (ndarray): image
@@ -164,6 +165,30 @@ class Board:
 
         return cells_cords
 
+    @staticmethod
+    def cell_image_impovement(cell: ndarray) -> ndarray:
+        blurred = cv2.GaussianBlur(cell, (7, 7), 3)
+        thresh = cv2.threshold(blurred, 0, 255,
+		cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+        thresh = clear_border(thresh)
+
+        return thresh
+
+    @staticmethod
+    def cell_is_empty(cell: ndarray) -> ndarray:
+        mask = cv2.inRange(cell, 254, 255)
+        height, width = mask.shape[:2]
+        number_of_pixels = height * width
+        count_white = cv2.countNonZero(mask)
+        percent_white = count_white*100/number_of_pixels
+        
+        if percent_white < 5: return True
+        else: return False
+    
+    @staticmethod
+    def find_digit(cell: ndarray) -> ndarray:
+        pass
+
     def print_img(self):
         """Prints original image"""
         cv2.imshow("original image", self.original_img)
@@ -192,16 +217,25 @@ class Board:
         cv2.imshow("Board", self.board)
         cv2.waitKey(WAIT_TIME)
 
-    def print_cells(self):
+    def print_raw_cells(self):
         """Print cells one by one"""
-        for cell in self.cells_cords:
-            cv2.imshow(
-                "cells",
-                self.board[
-                    cell[2] : cell[3],
-                    cell[0] : cell[1],
-                ],
-            )
+        for cell_cords in self.cells_cords:
+            cell = self.board[
+                    cell_cords[2] : cell_cords[3],
+                    cell_cords[0] : cell_cords[1],
+                ]
+            cv2.imshow("cells", cell)
+            cv2.waitKey(WAIT_TIME)
+
+    def print_improved_cells(self):
+        for cell_cords in self.cells_cords:
+            cell = self.board[
+                    cell_cords[2] : cell_cords[3],
+                    cell_cords[0] : cell_cords[1],
+                ]
+            improved_cell = self.cell_image_impovement(cell)
+            print(self.cell_is_empty(improved_cell))
+            cv2.imshow("cells", improved_cell)
             cv2.waitKey(WAIT_TIME)
 
 
@@ -214,7 +248,9 @@ if __name__ == "__main__":
     # board.print_thresh_board()
     # print("contours")
     # board.print_board_contours()
-    # print("board")
-    # board.print_board()
-    print("cells")
-    board.print_cells()
+    #print("board")
+    #board.print_board()
+    #print("cells")
+    #board.print_cells()
+    print("beer cells")
+    board.print_improved_cells()

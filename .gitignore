@@ -1,0 +1,17 @@
+# VS Code
+.vscode
+
+# Python
+.venv
+.tox
+__pycache__
+.mypy_cache
+*.pyc
+build
+fornax.egg-info
+
+# Other
+tmp
+tox_files
+venv*
+run

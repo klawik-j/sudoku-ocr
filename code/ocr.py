@@ -1,8 +1,9 @@
 from typing import List
+from pathlib import Path
 from math import sqrt
 
 from imutils.perspective import four_point_transform
-from imutils import grab_contours, resize
+from imutils import grab_contours
 from skimage.segmentation import clear_border
 from numpy import array, ndarray, expand_dims
 import cv2
@@ -13,24 +14,47 @@ WAIT_TIME = 2000
 
 
 class Board:
-    """Class of a sudoku board"""
+    """Class of a sudoku board."""
 
-    MNIST_MODEL_PATH = "/home/kuba/Desktop/mnist-digits-recognition/mnist_model.h5"
+    MNIST_MODELS = {
+        "kuba": Path("/home/kuba/Desktop/mnist-digits-recognition/mnist_model.h5"),
+        "WideResNet": Path("/home/kuba/Desktop/mnist-digits-recognition/WideResNet28_10.h5"),
+        "ResNet164": Path("/home/kuba/Desktop/mnist-digits-recognition/ResNet164.h5"),
+        "MobileNet": Path("/home/kuba/Desktop/mnist-digits-recognition/MobileNet.h5"),
+        "VGG16": Path("/home/kuba/Desktop/mnist-digits-recognition/VGG16.h5"),
+    }
 
-    def load_img(self, img_path: str) -> None:
+    def load_img(self, img_path: Path) -> None:
+        """Load board img.
+
+        Args:
+            img_path (Path): path to board img
+
+        Raises:
+            err: no board image have been found
+        """
         try:
             self.original_img = self._load_img(img_path)
             self._img_path = img_path
         except OSError as err:
-            raise err 
+            raise err
 
-    def load_SNN_model(self) -> None:
+    def load_SNN_model(self, model_name) -> None:
+        """Load SNN model.
+
+        Args:
+            model_name (str): name of SNN model
+
+        Raises:
+            err: SNN model file have not been found
+        """
         try:
-            self.model = load_model(self.MNIST_MODEL_PATH)
+            self.model = load_model(self.MNIST_MODELS[model_name])
         except OSError as err:
             raise err(f"MNIST model not fund in directory: {self.MNIST_MODEL_PATH}")
 
     def ocr_sudoku(self) -> None:
+        """OCR sudoku."""
         if not self._img_path or not self.original_img.any():
             raise ValueError("image not loaded")
         self.image_thresh = self._thresholding_image(self.original_img)
@@ -42,9 +66,10 @@ class Board:
             self.board_contours,
         )
         self.cells_cords = self._find_cells(self.board)
-        self.board_value = self.cell_img_to_board_value()            
+        self.board_value = self._board_img_to_board_value()
 
-    def cell_img_to_board_value(self) -> array:
+    def _board_img_to_board_value(self) -> array:
+        """Return board represetation as array from img."""
         board_value = []
         for cell_cords in self.cells_cords:
             cell = self.board[
@@ -53,18 +78,19 @@ class Board:
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
-                digit = self.find_digit(improved_cell)
-                if digit == 0: digit = 8
+                digit = self._find_digit(improved_cell)
+                if digit == 0:
+                    digit = 8
                 board_value.append(digit)
-            else: board_value.append(0)
+            else:
+                board_value.append(0)
         board_size = int(sqrt(len(board_value)))
         board_value = array(board_value)
-        return board_value.reshape(board_size, board_size)    
-            
+        return board_value.reshape(board_size, board_size)
 
     @staticmethod
     def _load_img(img_path: str) -> ndarray:
-        """Loads image
+        """Load image.
 
         Args:
             img_path (str): path to file
@@ -82,7 +108,7 @@ class Board:
 
     @staticmethod
     def _thresholding_image(img: ndarray) -> ndarray:
-        """Function apply thresholding_image on image
+        """Apply thresholding_image on image.
 
         Args:
             img (ndarray): image
@@ -105,7 +131,7 @@ class Board:
 
     @staticmethod
     def _find_contours(img: ndarray) -> ndarray:
-        """Finds contours
+        """Find contours.
 
         Args:
             img (ndarray): image
@@ -123,7 +149,7 @@ class Board:
 
     @staticmethod
     def _find_board_contour(contours: ndarray) -> ndarray:
-        """Looks for contours of sudoku board
+        """Look for contours of sudoku board.
 
         Args:
             contours (ndarray): all contours in image
@@ -147,7 +173,8 @@ class Board:
 
     @staticmethod
     def _adjust_perspective(img: ndarray, board_contours: ndarray) -> ndarray:
-        """Adjust perspective
+        """Adjust perspective.
+
         Use four point transformation
 
         Args:
@@ -162,7 +189,7 @@ class Board:
 
     @staticmethod
     def _find_cells(board: ndarray) -> List:
-        """Looks for cells coordinates
+        """Look for cells coordinates.
 
         Args:
             board (ndarray): image of board
@@ -175,6 +202,7 @@ class Board:
         +---+---+---+---+---+---+---+---+---+
         | 9 | 10| 11| 12| 13| 14| 15| 16| 17|
         +---+---+---+---+---+---+---+---+---+
+
         .
         .
         .
@@ -201,14 +229,16 @@ class Board:
 
     @staticmethod
     def _cell_image_impovement(cell: ndarray) -> ndarray:
-        #blurred = cv2.GaussianBlur(cell, (7, 7), 3)
+        """Improve cell's img."""
+        # blurred = cv2.GaussianBlur(cell, (7, 7), 3)
         thresh = cv2.threshold(cell, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
         thresh = clear_border(thresh)
 
         return thresh
 
     @staticmethod
-    def _cell_is_empty(cell: ndarray) -> ndarray:
+    def _cell_is_empty(cell: ndarray) -> bool:
+        """Determine if cell is empty or not."""
         mask = cv2.inRange(cell, 254, 255)
         height, width = mask.shape[:2]
         number_of_pixels = height * width
@@ -220,7 +250,8 @@ class Board:
         else:
             return False
 
-    def find_digit(self, cell: ndarray) -> ndarray:
+    def _find_digit(self, cell: ndarray) -> int:
+        """Recognise digit on img."""
         cell_ = cv2.resize(cell, (28, 28))
         cell_ = cell_.astype("float") / 255.0
         cell_ = img_to_array(cell_)
@@ -229,19 +260,18 @@ class Board:
 
         return prediction
 
-
-    def print_img(self):
-        """Prints original image"""
+    def print_img(self) -> None:
+        """Print original image."""
         cv2.imshow("original image", self.original_img)
         cv2.waitKey(WAIT_TIME)
 
-    def print_thresh_board(self):
-        """Prints treshold on image"""
+    def print_thresh_board(self) -> None:
+        """Print treshold on image."""
         cv2.imshow("board after thresholding", self.image_thresh)
         cv2.waitKey(WAIT_TIME)
 
-    def print_board_contours(self):
-        """Prints image with board contours marked"""
+    def print_board_contours(self) -> None:
+        """Print image with board contours marked."""
         board_on_img = self.original_img
         cv2.drawContours(
             board_on_img,
@@ -253,13 +283,13 @@ class Board:
         cv2.imshow("Board contours", board_on_img)
         cv2.waitKey(WAIT_TIME)
 
-    def print_board(self):
-        """Prints only board"""
+    def print_board(self) -> None:
+        """Print only board."""
         cv2.imshow("Board", self.board)
         cv2.waitKey(WAIT_TIME)
 
-    def print_raw_cells(self):
-        """Print cells one by one"""
+    def print_raw_cells(self) -> None:
+        """Print cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
                 cell_cords[2] : cell_cords[3],
@@ -268,7 +298,8 @@ class Board:
             cv2.imshow("cells", cell)
             cv2.waitKey(WAIT_TIME)
 
-    def print_improved_cells(self):
+    def print_improved_cells(self) -> None:
+        """Print improved img of cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
                 cell_cords[2] : cell_cords[3],
@@ -279,7 +310,8 @@ class Board:
             cv2.imshow("cells", improved_cell)
             cv2.waitKey(WAIT_TIME)
 
-    def print_digits(self):
+    def print_digits(self) -> None:
+        """Print img of cell and digit interpretation."""
         for cell_cords in self.cells_cords:
             cell = self.board[
                 cell_cords[2] : cell_cords[3],
@@ -287,15 +319,15 @@ class Board:
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
-                digit = self.find_digit(improved_cell)
+                digit = self._find_digit(improved_cell)
+                print(digit)
                 cv2.imshow("cells", improved_cell)
                 cv2.waitKey(WAIT_TIME)
-                print(digit)
 
 
 if __name__ == "__main__":
     img_path = "/home/kuba/Desktop/sudoku-ocr/code/img/sudoku1.jpg"
-    #board = Board(img_path)
+    # board = Board(img_path)
     # print("original")
     # board.print_board()
     # print("thresh")
@@ -308,11 +340,11 @@ if __name__ == "__main__":
     # board.print_cells()
     # print("beer cells")
     # board.print_improved_cells()
-    #board.load_SNN_model()
-    #board.print_digits()
+    # board.load_SNN_model()
+    # board.print_digits()
     board = Board()
     board.load_img(img_path)
-    board.load_SNN_model()
+    board.load_SNN_model("kuba")
     board.ocr_sudoku()
     print(board.board_value)
-    #board.print_improved_cells()
+    # board.print_improved_cells()

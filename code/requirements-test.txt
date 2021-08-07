@@ -1,3 +1,7 @@
+imutils==0.5.4
+opencv-python==4.5.2.54
+scikit-image==0.18.2
+tensorflow==2.5.0
 black
 flake8
 flake8-blind-except
@@ -9,5 +13,6 @@ flake8-rst-docstrings
 flake8-use-fstring
 importlib-metadata<2.0
 mypy
+pytest
 radon
 tox

@@ -10,6 +10,10 @@ __pycache__
 build
 fornax.egg-info
 
+# Logs
+logs
+*.log
+
 # Other
 tmp
 tox_files

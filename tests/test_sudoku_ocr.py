@@ -80,7 +80,6 @@ class TestBoard:
         """Set up test env."""
         self.board = Board()
 
-    #@pytest.mark.xfail
     @pytest.mark.parametrize("data", TEST_CASE)
     def test_ocr_sudoku(self, data) -> None:
         """Test ocr_sudoku method."""

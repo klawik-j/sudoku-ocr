@@ -1,15 +1,15 @@
-from typing import List
-from pathlib import Path
 from math import sqrt
+from pathlib import Path
+from typing import List
 
-from imutils.perspective import four_point_transform
-from imutils import grab_contours, resize
-from skimage.segmentation import clear_border
-from numpy import array, ndarray, expand_dims
 import cv2
-from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.models import load_model
+from imutils import grab_contours, resize
+from imutils.perspective import four_point_transform
+from numpy import array, expand_dims, ndarray
+from skimage.segmentation import clear_border
 from sudoku import Sudoku
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
 
 from sudoku_ocr.image import Image
 

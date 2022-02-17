@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from numpy import ndarray
 import cv2
+from numpy import ndarray
 
 
 class Image:

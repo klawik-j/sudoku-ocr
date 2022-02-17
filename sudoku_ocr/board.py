@@ -1,3 +1,4 @@
+import logging
 from math import sqrt
 from pathlib import Path
 from typing import List
@@ -13,6 +14,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 
 from sudoku_ocr.image import Image
 
+LOGGER = logging.getLogger(__name__)
 WAIT_TIME = 2000
 
 
@@ -87,8 +89,8 @@ class Board:
         board_value = []
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2]: cell_cords[3],
+                cell_cords[0]: cell_cords[1],
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
@@ -288,8 +290,8 @@ class Board:
         """Print cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2]: cell_cords[3],
+                cell_cords[0]: cell_cords[1],
             ]
             cv2.imshow("cells", cell)
             cv2.waitKey(WAIT_TIME)
@@ -298,11 +300,11 @@ class Board:
         """Print improved img of cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2]: cell_cords[3],
+                cell_cords[0]: cell_cords[1],
             ]
             improved_cell = self._cell_image_impovement(cell)
-            print(self._cell_is_empty(improved_cell))
+            LOGGER.info(self._cell_is_empty(improved_cell))
             cv2.imshow("cells", improved_cell)
             cv2.waitKey(WAIT_TIME)
 
@@ -310,12 +312,12 @@ class Board:
         """Print img of cell and digit interpretation."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2]: cell_cords[3],
+                cell_cords[0]: cell_cords[1],
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
                 digit = self._find_digit(improved_cell)
-                print(digit)
+                LOGGER.info(digit)
                 cv2.imshow("cells", improved_cell)
                 cv2.waitKey(WAIT_TIME)

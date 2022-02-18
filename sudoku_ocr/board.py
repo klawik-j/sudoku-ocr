@@ -69,8 +69,8 @@ class Board:
         puzzle = Sudoku(3, 3, board=self.board_value.tolist())
         try:
             self._solved_board = array(puzzle.solve(raising=True).board)
-        except Sudoku.UnsolvableSudoku as err:
-            self._solved_board = zeros((9,9), int)
+        except Sudoku.UnsolvableSudoku:
+            self._solved_board = zeros((9, 9), int)
 
     @property
     def solved_board(self) -> array:
@@ -92,8 +92,8 @@ class Board:
         board_value = []
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2]: cell_cords[3],
-                cell_cords[0]: cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
@@ -293,8 +293,8 @@ class Board:
         """Print cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2]: cell_cords[3],
-                cell_cords[0]: cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             cv2.imshow("cells", cell)
             cv2.waitKey(WAIT_TIME)
@@ -303,8 +303,8 @@ class Board:
         """Print improved img of cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2]: cell_cords[3],
-                cell_cords[0]: cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             improved_cell = self._cell_image_impovement(cell)
             LOGGER.info(self._cell_is_empty(improved_cell))
@@ -315,8 +315,8 @@ class Board:
         """Print img of cell and digit interpretation."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2]: cell_cords[3],
-                cell_cords[0]: cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):

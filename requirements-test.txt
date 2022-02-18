@@ -1,4 +1,16 @@
+black
+flake8
+flake8-blind-except
+flake8-bugbear
+flake8-builtins
+flake8-comprehensions
+flake8-docstrings
+flake8-logging-format
+flake8-polyfill
+flake8-print
+flake8-rst-docstrings
 imutils==0.5.4
+isort<4.3.5
 opencv-python==4.5.*
 scikit-image==0.18.2
 tensorflow==2.8.0

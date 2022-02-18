@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.7', '3.8', '3.9']
 
     steps:
     - uses: actions/checkout@v1
@@ -21,4 +21,4 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install tox tox-gh-actions
     - name: Test with tox
-      run: tox
+      run: tox -e format,flake8,pytest

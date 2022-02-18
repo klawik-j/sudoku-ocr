@@ -1,18 +1,20 @@
-from typing import List
-from pathlib import Path
+import logging
 from math import sqrt
+from pathlib import Path
+from typing import List
 
-from imutils.perspective import four_point_transform
-from imutils import grab_contours, resize
-from skimage.segmentation import clear_border
-from numpy import array, ndarray, expand_dims
 import cv2
-from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.models import load_model
+from imutils import grab_contours, resize
+from imutils.perspective import four_point_transform
+from numpy import array, expand_dims, ndarray, zeros
+from skimage.segmentation import clear_border
 from sudoku import Sudoku
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
 
 from sudoku_ocr.image import Image
 
+LOGGER = logging.getLogger(__name__)
 WAIT_TIME = 2000
 
 
@@ -65,10 +67,13 @@ class Board:
     def solve(self) -> None:
         """Sove sudoku."""
         puzzle = Sudoku(3, 3, board=self.board_value.tolist())
-        self._solved_board = array(puzzle.solve().board)
+        try:
+            self._solved_board = array(puzzle.solve(raising=True).board)
+        except Sudoku.UnsolvableSudoku:
+            self._solved_board = zeros((9, 9), int)
 
     @property
-    def solved_board(self) -> None:
+    def solved_board(self) -> array:
         """Return solved board."""
         return self._solved_board
 
@@ -87,8 +92,8 @@ class Board:
         board_value = []
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
@@ -288,8 +293,8 @@ class Board:
         """Print cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             cv2.imshow("cells", cell)
             cv2.waitKey(WAIT_TIME)
@@ -298,11 +303,11 @@ class Board:
         """Print improved img of cells one by one."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             improved_cell = self._cell_image_impovement(cell)
-            print(self._cell_is_empty(improved_cell))
+            LOGGER.info(self._cell_is_empty(improved_cell))
             cv2.imshow("cells", improved_cell)
             cv2.waitKey(WAIT_TIME)
 
@@ -310,12 +315,12 @@ class Board:
         """Print img of cell and digit interpretation."""
         for cell_cords in self.cells_cords:
             cell = self.board[
-                cell_cords[2] : cell_cords[3],
-                cell_cords[0] : cell_cords[1],
+                cell_cords[2] : cell_cords[3],  # noqa: E203
+                cell_cords[0] : cell_cords[1],  # noqa: E203
             ]
             improved_cell = self._cell_image_impovement(cell)
             if not self._cell_is_empty(improved_cell):
                 digit = self._find_digit(improved_cell)
-                print(digit)
+                LOGGER.info(digit)
                 cv2.imshow("cells", improved_cell)
                 cv2.waitKey(WAIT_TIME)

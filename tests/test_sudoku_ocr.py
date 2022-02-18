@@ -1,5 +1,5 @@
-from pathlib import Path
 import logging
+from pathlib import Path
 
 import pytest
 from numpy import array
@@ -55,21 +55,27 @@ CORRECT_OCR = {
 }
 
 TEST_CASE = [
-    pytest.param({
-        "board_img_path": Path("tests/img/sudoku1.png"),
-        "correct_ocr": CORRECT_OCR["1"],
+    pytest.param(
+        {
+            "board_img_path": Path("tests/img/sudoku1.png"),
+            "correct_ocr": CORRECT_OCR["1"],
         },
-        id="img:1"),
-    pytest.param({
-        "board_img_path": Path("tests/img/sudoku2.jpg"),
-        "correct_ocr": CORRECT_OCR["2"],
+        id="img:1",
+    ),
+    pytest.param(
+        {
+            "board_img_path": Path("tests/img/sudoku2.jpg"),
+            "correct_ocr": CORRECT_OCR["2"],
         },
-        id="img:2"),
-    pytest.param({
-        "board_img_path": Path("tests/img/sudoku3.jpg"),
-        "correct_ocr": CORRECT_OCR["3"],
+        id="img:2",
+    ),
+    pytest.param(
+        {
+            "board_img_path": Path("tests/img/sudoku3.jpg"),
+            "correct_ocr": CORRECT_OCR["3"],
         },
-        id="img:3"),
+        id="img:3",
+    ),
 ]
 
 
@@ -100,7 +106,7 @@ class TestBoard:
                     )
                 elif data["correct_ocr"][y][x] != 0:
                     number_of_correct_ocr_digits += 1
-        correct_ocr_percent: int =  number_of_correct_ocr_digits * 100 // number_of_digits_in_sudoku
+        correct_ocr_percent: int = number_of_correct_ocr_digits * 100 // number_of_digits_in_sudoku
         LOGGER.info(f"Correct ocr percent is: {correct_ocr_percent}%")
-        
+
         assert correct_ocr_percent >= CORRECT_OCR_PERCENT_THRESHOLD

@@ -6,7 +6,7 @@ from typing import List
 import cv2
 from imutils import grab_contours, resize
 from imutils.perspective import four_point_transform
-from numpy import array, expand_dims, ndarray
+from numpy import array, expand_dims, ndarray, zeros
 from skimage.segmentation import clear_border
 from sudoku import Sudoku
 from tensorflow.keras.models import load_model
@@ -67,10 +67,13 @@ class Board:
     def solve(self) -> None:
         """Sove sudoku."""
         puzzle = Sudoku(3, 3, board=self.board_value.tolist())
-        self._solved_board = array(puzzle.solve().board)
+        try:
+            self._solved_board = array(puzzle.solve(raising=True).board)
+        except Sudoku.UnsolvableSudoku as err:
+            self._solved_board = zeros((9,9), int)
 
     @property
-    def solved_board(self) -> None:
+    def solved_board(self) -> array:
         """Return solved board."""
         return self._solved_board
 

@@ -19,7 +19,7 @@ WAIT_TIME = 2000
 
 
 class Board:
-    """Class of a sudoku board."""
+    """Class of a sudoku board."""  
 
     def prepare_img(self, img_path: Path) -> None:
         """Load board img.
@@ -43,7 +43,7 @@ class Board:
         Raises:
             err: SNN model file have not been found
         """
-        self.model = load_model(model_path)
+        self.model= load_model(model_path)
 
     def ocr_sudoku(self) -> None:
         """OCR sudoku."""

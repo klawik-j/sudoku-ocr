@@ -9,6 +9,8 @@ flake8-logging-format
 flake8-polyfill
 flake8-print
 flake8-rst-docstrings
+mock
+defer
 imutils==0.5.4
 isort<4.3.5
 opencv-python==4.5.*

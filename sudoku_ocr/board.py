@@ -8,7 +8,7 @@ from imutils import grab_contours, resize
 from imutils.perspective import four_point_transform
 from numpy import array, expand_dims, ndarray, zeros
 from skimage.segmentation import clear_border
-from sudoku import Sudoku
+from sudoku import Sudoku, sudoku
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 
@@ -43,10 +43,7 @@ class Board:
         Raises:
             err: SNN model file have not been found
         """
-        try:
-            self.model = load_model(model_path)
-        except OSError as err:
-            raise err(f"MNIST model not fund in directory: {model_path}")
+        self.model = load_model(model_path)
 
     def ocr_sudoku(self) -> None:
         """OCR sudoku."""
@@ -68,12 +65,12 @@ class Board:
         """Sove sudoku."""
         puzzle = Sudoku(3, 3, board=self.board_value.tolist())
         try:
-            self._solved_board = array(puzzle.solve(raising=True).board)
-        except Sudoku.UnsolvableSudoku:
-            self._solved_board = zeros((9, 9), int)
+            self._solved_board = puzzle.solve(raising=True).board
+        except sudoku.UnsolvableSudoku:
+            self._solved_board = zeros((9, 9), int).tolist()
 
     @property
-    def solved_board(self) -> array:
+    def solved_board(self) -> list:
         """Return solved board."""
         return self._solved_board
 

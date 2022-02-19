@@ -1,11 +1,10 @@
 import logging
-from defer import return_value
 from pathlib import Path
 
 import pytest
-import mock
 from numpy import array, zeros
 
+import mock
 from sudoku_ocr.board import Board
 
 LOGGER = logging.getLogger(__name__)
@@ -13,16 +12,19 @@ CORRECT_OCR_PERCENT_THRESHOLD = 50
 CNN_PATH = Path("sudoku_ocr/cnn.h5")
 CORRECT_IMAGE_PATH = Path("tests/img/sudoku1.png")
 INCORRECT_FILE_PATH = Path("incorrect/file/path")
-INCORRECT_SUDOKU = array([
-    [1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],])
+INCORRECT_SUDOKU = array(
+    [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]
+)
 CORRECT_SOLVED_SUDOKU_1 = [
     [5, 6, 7, 1, 2, 4, 8, 3, 9],
     [8, 3, 2, 9, 7, 6, 4, 1, 5],
@@ -32,7 +34,8 @@ CORRECT_SOLVED_SUDOKU_1 = [
     [7, 2, 3, 5, 6, 1, 9, 4, 8],
     [2, 1, 5, 8, 9, 3, 7, 6, 4],
     [9, 7, 4, 6, 1, 5, 2, 8, 3],
-    [3, 8, 6, 7, 4, 2, 5, 9, 1]]
+    [3, 8, 6, 7, 4, 2, 5, 9, 1],
+]
 CORRECT_OCR = {
     "1": array(
         [
@@ -132,37 +135,37 @@ class TestBoard:
         assert correct_ocr_percent >= CORRECT_OCR_PERCENT_THRESHOLD
 
     def test_prepare_img_non_existing_file(self) -> None:
-        """Test prepare_img public function with existing file path."""
+        """Test prepare_img public method with existing file path."""
         with pytest.raises(OSError):
             self.board.prepare_img(INCORRECT_FILE_PATH)
 
     def test_prepare_img_existing_file(self) -> None:
-        """Test prepare_img public function with non existing file path."""
+        """Test prepare_img public method with non existing file path."""
         self.board.prepare_img(CORRECT_IMAGE_PATH)
         assert self.board.resize_img.shape[1] == 600
 
     def test_load_SNN_model_non_existing_file(self) -> None:
+        """Test load_SNN_model public method with existing file path."""
         with pytest.raises(OSError):
             self.board.load_SNN_model(INCORRECT_FILE_PATH)
 
     def test_load_SNN_model_existing_file(self) -> None:
+        """Test load_SNN_model public method with non existing file path."""
         self.board.load_SNN_model(CNN_PATH)
-        assert self.board.model != None
+        assert self.board.model is not None
 
     def test_solve_correct_board_value(self) -> None:
+        """Test solve public method for correct board value."""
         with mock.patch(
-            'sudoku_ocr.board.Board.board_value',
-            new_callable=mock.PropertyMock,
-            return_value=CORRECT_OCR["1"]
-            ):
+            "sudoku_ocr.board.Board.board_value", new_callable=mock.PropertyMock, return_value=CORRECT_OCR["1"]
+        ):
             self.board.solve()
             assert self.board.solved_board == CORRECT_SOLVED_SUDOKU_1
 
     def test_solve_incorrect_board_value(self) -> None:
+        """Test solve public methos for incorrect board value."""
         with mock.patch(
-            'sudoku_ocr.board.Board.board_value',
-            new_callable=mock.PropertyMock,
-            return_value=INCORRECT_SUDOKU
-            ):
+            "sudoku_ocr.board.Board.board_value", new_callable=mock.PropertyMock, return_value=INCORRECT_SUDOKU
+        ):
             self.board.solve()
-            assert (self.board.solved_board == zeros((9, 9), int)).tolist()    
+            assert (self.board.solved_board == zeros((9, 9), int)).tolist()

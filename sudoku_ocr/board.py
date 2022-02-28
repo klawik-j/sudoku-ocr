@@ -21,6 +21,10 @@ WAIT_TIME = 2000
 class Board:
     """Class of a sudoku board."""
 
+    def __init__(self) -> None:
+        """Init Board class."""
+        self.load_SNN_model(Path(__file__).absolute().parent.joinpath("cnn.h5"))
+
     def prepare_img(self, img_path: Path) -> None:
         """Load board img.
 

@@ -1,10 +1,10 @@
 import logging
 from pathlib import Path
 
+import mock
 import pytest
 from numpy import array, zeros
 
-import mock
 from sudoku_ocr.board import Board
 
 LOGGER = logging.getLogger(__name__)
@@ -113,7 +113,6 @@ class TestBoard:
     def test_ocr_sudoku(self, data) -> None:
         """Test ocr_sudoku method."""
         self.board.prepare_img(data["board_img_path"])
-        self.board.load_SNN_model(CNN_PATH)
         self.board.ocr_sudoku()
 
         number_of_digits_in_sudoku: int = 0

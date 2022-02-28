@@ -21,7 +21,7 @@ def get_long_description() -> List[str]:
 
 setup(
     name="sudoku-ocr",
-    version="1.0.0",
+    version="1.0.1",
     description="Package to ocr sudoku",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",

@@ -18,3 +18,4 @@ scikit-image==0.18.2
 tensorflow==2.8.0
 py-sudoku==1.0.2
 pytest==7.0.1
+twine

@@ -24,5 +24,6 @@ jobs:
         python -m pip install tox tox-gh-actions
     - name: Tox build and publish
       env:
-        SECRETS: ${{ toJson(secrets) }}
-      run: env
+        TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+      run: tox -e build,publish

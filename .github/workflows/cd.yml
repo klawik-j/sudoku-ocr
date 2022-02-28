@@ -24,7 +24,7 @@ jobs:
         python -m pip install tox tox-gh-actions
     - name: Export secrets
       run:
-        export TWINE_USERNAME=${{ secret.TWINE_CREDS_USR }}
-        export TWINE_PASSWORD=${{ secret.TWINE_CREDS_PSW }}
+        export TWINE_USERNAME=${{ secrets.TWINE_CREDS_USR }}
+        export TWINE_PASSWORD=${{ secrets.TWINE_CREDS_PSW }}
     - name: Tox build and publish
       run: tox -e build,publish

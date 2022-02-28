@@ -25,4 +25,4 @@ jobs:
     - name: Tox build and publish
       env:
         SECRETS: ${{ toJson(secrets) }}
-      run: tox -e build,publish
+      run: env

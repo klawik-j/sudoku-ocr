@@ -1,0 +1,30 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+      - 'v*'
+    path:
+      - 'setup.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+  steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox tox-gh-actions
+    - name: Export secrets
+      run:
+        export TWINE_USERNAME=${{ secret.TWINE_CREDS_USR }}
+        export TWINE_PASSWORD=${{ secret.TWINE_CREDS_PSW }}
+    - name: Tox build and publish
+      run: tox -e build,publish

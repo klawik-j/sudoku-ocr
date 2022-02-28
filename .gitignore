@@ -8,7 +8,8 @@ __pycache__
 .mypy_cache
 *.pyc
 build
-fornax.egg-info
+sudoku_ocr.egg-info
+dist
 
 # Logs
 logs

@@ -2,11 +2,8 @@ name: CD
 
 on:
   push:
-    branches:
-      - master
-      - 'v*'
-    path:
-      - 'setup.py'
+    tags:
+      - v*
 
 jobs:
   build:

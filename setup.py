@@ -21,16 +21,17 @@ def get_long_description() -> List[str]:
 
 setup(
     name="sudoku-ocr",
-    version="1.0.1",
+    author="Jakub Klawikowski",
+    author_email="klawik.j@gmail.com",
     description="Package to ocr sudoku",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    author="klawik-j",
+    url="https://github.com/klawik-j/sudoku-ocr",
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.7",
+    setup_requires=["setuptools_scm >= 6.2"],
     install_requires=get_requirements(),
-    url="https://github.com/klawik-j/sudoku-ocr",
     license="MIT",
     classifiers=[
         "Programming Language :: Python :: 3",

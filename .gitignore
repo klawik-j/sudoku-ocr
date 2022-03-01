@@ -10,6 +10,8 @@ __pycache__
 build
 sudoku_ocr.egg-info
 dist
+version.py
+.eggs
 
 # Logs
 logs

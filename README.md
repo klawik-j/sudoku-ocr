@@ -28,5 +28,5 @@ It is possible to set `board_value` as 2D array directly and than call
 ```
 board.solve()
 ```
-In case user just want to solve sudoku, without need of ocr it first.
+In case user just want to solve sudoku, without need to ocr it first.
 

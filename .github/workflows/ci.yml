@@ -22,5 +22,5 @@ jobs:
         python -m pip install tox tox-gh-actions
     - name: Test with tox
       run: |
-        chmod +x ./scripts/run.sh
+        chmod +x ./scripts/run_ci.sh
         ./scripts/run_ci.sh

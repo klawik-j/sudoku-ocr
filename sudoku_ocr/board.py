@@ -6,7 +6,7 @@ from typing import List
 import cv2
 from imutils import grab_contours, resize
 from imutils.perspective import four_point_transform
-from numpy import array, expand_dims, ndarray, zeros
+from numpy import array, expand_dims, fromstring, ndarray, uint8, zeros
 from skimage.segmentation import clear_border
 from sudoku import Sudoku, sudoku
 from tensorflow.keras.models import load_model
@@ -36,6 +36,15 @@ class Board:
         """
         self.original_img = Image(img_path).data
         self._img_path = img_path
+        self.resize_img = resize(self.original_img, width=600)
+
+    def prepare_img_from_data(self, img_file: bytes) -> None:
+        """Load board image from file.
+
+        Args:
+            img_file (ndarray): img data
+        """
+        self.original_img = cv2.imdecode(fromstring(img_file, uint8), cv2.IMREAD_UNCHANGED)
         self.resize_img = resize(self.original_img, width=600)
 
     def load_SNN_model(self, model_path: Path) -> None:

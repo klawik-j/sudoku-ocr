@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
+## [1.1.0] - 2022-03-03
+### Added:
+- `Board.prepare_img_from_data()` to enable load image from data stream
+
 ## [1.0.2] - 2022-03-01
 ### Added:
 - Release package

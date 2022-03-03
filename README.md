@@ -46,6 +46,7 @@ User have access to public properties:
 * `solved_board` - solved board_value. In case board_value is invalid, solved_board will be 2D array filled with 0.
 
 ### Usage without ocr
+In case user just wants to solve sudoku, without need to ocr it first or ocr is incorrect.
 It is possible to set `board_value` as 2D array directly and than call solve() e.g.
 ```python
 board = Board()
@@ -72,5 +73,4 @@ print(board.solved_board)
 #  [9 7 4 6 1 5 2 8 3]
 #  [3 8 6 7 4 2 5 9 1]]
 ```
-In case user just wants to solve sudoku, without need to ocr it first or ocr is incorrect.
 

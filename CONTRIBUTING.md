@@ -15,8 +15,9 @@ Overview of the project structure
 * `tests/` - tests
 
 ## Testing
-Tests are part of tox environment. Run below command:
+Tests are part of tox environment. Run below commands:
 ```
+pip install tox
 tox -e format,flake8,pytest
 ```
 `format` includes black and isort

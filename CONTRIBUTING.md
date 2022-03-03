@@ -18,9 +18,8 @@ Overview of the project structure
 Tests are part of tox environment. Run below commands:
 ```
 pip install tox
-tox -e format,flake8,pytest
+tox -e pytest
 ```
-`format` includes black and isort
 
 ## Changelog
 Each user visible change must be included in the [CHANGELOG](./CHANGELOG.md) under `Unreleased` section.

@@ -39,7 +39,7 @@ Release process consists of three major steps:
 2. Create a git tag for the release
 3. Deploy package to PyPI
 
-If all notable changes are described in the [CHAGELOG](./CHANGELOG.md) in the same commit witch introduced given feature then the creation of new release is as simple as copying `Unreleased` sections and renaming it to `[{VERSION}] - {DATE}` format e.g. `[1.0.2] - 2022-03-01`.
+If all notable changes are described in the [CHAGELOG](./CHANGELOG.md) in the same commit which introduced given feature then the creation of new release is as simple as copying `Unreleased` sections and renaming it to `[{VERSION}] - {DATE}` format e.g. `[1.0.2] - 2022-03-01`.
 Updated [CHANGELOG](./CHANGELOG.md) must be then merged into the master branch as any other change.
 
 Given that the repository is ready to be released. A new git tag must be created and pushed to origin/master. Tag must be the following [semver](https://semver.org/spec/v2.0.0.html) format - `v{MAJOR}.{MINOR}.{PATCH}`.
@@ -59,5 +59,5 @@ export TWINE_PASSWORD={PYPI PASSWORD}
 
 ## Requirements
 There are two types of requirements:
-* Requirements specified in `*_requires` section in [setup.py](./setup.py) - taken directly form [requirements.txt](./requirements.txt) file witch are used while installing the packaged with `pip`. They are also used to create environment for developing purposes.
+* Requirements specified in `*_requires` section in [setup.py](./setup.py) - taken directly form [requirements.txt](./requirements.txt) file which are used while installing the packaged with `pip`. They are also used to create environment for developing purposes.
 * [requirements-test.txt](./requirements-test.txt) used for creating reproducible environment for testing by tox.

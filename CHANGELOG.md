@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
+## [1.1.1] - 2022-03-04
+### Fixed:
+- `requirements.txt` and `requirements-test.txt` had 2 different version of tensorflow.
+
+
 ## [1.1.0] - 2022-03-03
 ### Added:
 - `Board.prepare_img_from_data()` to enable load image from data stream

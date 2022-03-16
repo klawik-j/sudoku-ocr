@@ -10,7 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-## [1.1.1] - 2022-03-04
+## [1.1.3] - 2022-03-16
+### Change:
+- way of validation if image has been loaded. Not it only takes into account value of property self.original_img
+
+## [1.1.2] - 2022-03-16
 ### Fixed:
 - bug in case of using `Board.load_img_from_data` missing self._img_path property
 

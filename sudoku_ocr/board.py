@@ -61,7 +61,7 @@ class Board:
 
     def ocr_sudoku(self) -> None:
         """OCR sudoku."""
-        if not self._img_path or not self.original_img.any():
+        if not self.original_img.any():
             raise ValueError("image not loaded")
 
         self.image_thresh = self._thresholding_image(self.resize_img)

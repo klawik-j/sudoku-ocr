@@ -24,6 +24,7 @@ class Board:
     def __init__(self) -> None:
         """Init Board class."""
         self.load_SNN_model(Path(__file__).absolute().parent.joinpath("cnn.h5"))
+        self._img_path
 
     def prepare_img(self, img_path: Path) -> None:
         """Load board img.

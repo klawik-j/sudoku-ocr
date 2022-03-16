@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [1.1.1] - 2022-03-04
 ### Fixed:
+- bug in case of using `Board.load_img_from_data` missing self._img_path property
+
+## [1.1.1] - 2022-03-04
+### Fixed:
 - `requirements.txt` and `requirements-test.txt` had 2 different version of tensorflow.
 
 

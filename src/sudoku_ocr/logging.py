@@ -1,13 +1,13 @@
 """Logging utils."""
 
-from argparse import ArgumentParser
 import logging
 import logging.config
+from argparse import ArgumentParser
 
 
 def setup_logging(level: int = None) -> None:
-    """Setup logging.
-    
+    """Setups logging.
+
     :param level: logging level
     """
     if level is None:
@@ -61,8 +61,8 @@ def setup_logging(level: int = None) -> None:
 
 
 def setup_parser(root_parser: ArgumentParser) -> None:
-    """Setup parser.
-    
+    """Setups parser.
+
     :param root_parser: parser to extend
     """
     logging_group = root_parser.add_argument_group("logging")

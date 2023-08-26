@@ -2,6 +2,7 @@ import argparse
 import logging
 
 import pytest
+
 from sudoku_ocr.logging import setup_logging, setup_parser
 
 
@@ -10,7 +11,7 @@ class TestSetupLogging:
         setup_logging()
         logger = logging.getLogger("root")
         assert logger.getEffectiveLevel() == logging.WARNING
-    
+
     def test_default_main_level(self) -> None:
         setup_logging()
         logger = logging.getLogger("__main__")

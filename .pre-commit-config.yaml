@@ -31,16 +31,3 @@ repos:
     - id: mypy
       additional_dependencies: [types-requests]
       files: (^src/|^setup.py|^tests/)
-  - repo: https://github.com/jazzband/pip-tools
-    rev: 6.2.0
-    hooks:
-    - id: pip-compile
-      name: pip-compile setup.py
-      args:
-      - setup.py
-      files: ^(setup\.py|requirements\.txt)$
-    - id: pip-compile
-      name: pip-compile requirements-dev.in
-      args:
-      - setup.py
-      files: ^requirements-dev\.(in|txt)$

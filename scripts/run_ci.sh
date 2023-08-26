@@ -2,5 +2,5 @@
 
 set -e
 
-# tox -e pre-commit
-# tox
+tox -e pre-commit
+tox

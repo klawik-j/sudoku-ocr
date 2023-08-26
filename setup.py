@@ -1,19 +1,11 @@
 from pathlib import Path
-from typing import List
 
 from setuptools import find_packages, setup
 
 BASE_PROJECT_DIR = Path(__file__).absolute().parent
 
 
-def get_requirements() -> List[str]:
-    """Load requirements."""
-    requirements_path = BASE_PROJECT_DIR.joinpath("requirements.txt")
-    with open(requirements_path, "r") as stream:
-        return [pkg.strip("\n") for pkg in stream if pkg != ""]
-
-
-def get_long_description() -> List[str]:
+def get_long_description() -> str:
     """Load long description."""
     with open("README.md", "r", encoding="utf-8") as stream:
         return stream.read()

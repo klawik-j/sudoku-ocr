@@ -29,9 +29,15 @@ setup(
     url="https://github.com/klawik-j/sudoku-ocr",
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.7",
+    python_requires=">=3.10",
     setup_requires=["setuptools_scm >= 6.2"],
-    install_requires=get_requirements(),
+    install_requires=[
+        "imutils  == 0.5.4",
+        "opencv-python == 4.8.0.76",
+        "scikit-image == 0.18.2",
+        "tensorflow == 2.8.0",
+        "py-sudoku == 1.0.2",
+    ],
     license="MIT",
     classifiers=[
         "Programming Language :: Python :: 3",

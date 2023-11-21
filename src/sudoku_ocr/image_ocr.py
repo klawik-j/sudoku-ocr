@@ -26,12 +26,15 @@ class ImageOcrAdapter(ImageAdapter):
         """Get contours present in image."""
         ...
 
+    @staticmethod
     def get_largest_rectangle_contours(contours: ndarray) -> ndarray:
         """Look for largest rectangle contours."""
         ...
 
 
 class ImageOcr(Image, ImageOcrAdapter):
+    """ImageOcr class."""
+
     def __init__(self) -> None:
         """Initialize ImageOcr class."""
         super().__init__()

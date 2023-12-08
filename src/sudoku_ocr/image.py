@@ -14,6 +14,7 @@ from cv2 import (
     cvtColor,
     imread,
     imshow,
+    imwrite,
     waitKey,
 )
 from imutils import resize
@@ -26,6 +27,10 @@ class ImageAdapter(Protocol):
     """Image adapter."""
 
     def load_image(self, path: Path) -> None:
+        """Load image."""
+        ...
+
+    def save_image(self, path: Path) -> None:
         """Load image."""
         ...
 
@@ -67,6 +72,10 @@ class Image(ImageAdapter):
         else:
             self._data = imread(str(path))
             self._path = path
+
+    def save(self, path: Path) -> None:
+        """Save image to file."""
+        imwrite(path, self.data)
 
     def resize(self, width: int = 600) -> None:
         """Resize image to desire width."""

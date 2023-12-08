@@ -17,6 +17,10 @@ class TestImage:
         assert image.data is not None
         assert image.path is not None
 
+    # TODO
+    def test_save_image(self) -> None:
+        pass
+
     def test_resize_image_default_value(self) -> None:
         image = Image()
         image.load_image(Path("tests/img/no_sudoku2.jpg"))

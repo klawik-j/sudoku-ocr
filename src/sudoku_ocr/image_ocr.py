@@ -14,6 +14,7 @@ from cv2 import (
     waitKey,
 )
 from imutils import grab_contours
+from imutils.perspective import four_point_transform
 from numpy import ndarray
 
 from sudoku_ocr.image import WAIT_TIME, Image, ImageAdapter
@@ -61,6 +62,10 @@ class ImageOcr(Image, ImageOcrAdapter):
             if len(approx) == 4:
                 return approx
         raise Exception("Largest rectangle have not been found.")
+
+    def adjust_perspective_to_specific_zone(self, zone: ndarray) -> None:
+        """Adjust perspective to specific zone."""
+        self.data = four_point_transform(self.data, zone.reshape(4, 2))
 
     def show_with_contours(self, contours: ndarray) -> None:
         """Show image with contours marked."""

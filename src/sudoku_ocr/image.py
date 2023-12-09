@@ -2,7 +2,6 @@
 
 from os.path import isfile
 from pathlib import Path
-from typing import Protocol
 
 from cv2 import (
     ADAPTIVE_THRESH_GAUSSIAN_C,
@@ -23,41 +22,7 @@ from numpy import ndarray
 WAIT_TIME = 2000
 
 
-class ImageAdapter(Protocol):
-    """Image adapter."""
-
-    def load_image(self, path: Path) -> None:
-        """Load image."""
-        ...
-
-    def save_image(self, path: Path) -> None:
-        """Load image."""
-        ...
-
-    def resize(self) -> None:
-        """Resize image."""
-        ...
-
-    def thresholding(self) -> None:
-        """Implement thresholding on image."""
-        ...
-
-    @property
-    def data(self) -> ndarray:
-        """Image data property."""
-        ...
-
-    @data.setter
-    def data(self, data: ndarray) -> None:
-        ...
-
-    @property
-    def path(self) -> Path:
-        """Image path property."""
-        ...
-
-
-class Image(ImageAdapter):
+class Image:
     """True Image class."""
 
     def __init__(self) -> None:

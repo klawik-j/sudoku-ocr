@@ -3,10 +3,10 @@ from pathlib import Path
 from cv2 import COLOR_BGR2GRAY, cvtColor
 from numpy import array
 
-from sudoku_ocr.image_ocr import ImageOcr
+from sudoku_ocr.image_processing import ImageProcessing
 
 
-class TestImageOcr:
+class TestImageProcessing:
     # TODO
     def test_get_contours(self) -> None:
         pass
@@ -24,12 +24,12 @@ class TestImageOcr:
                 [512, 666],
             ]
         )
-        image = ImageOcr()
+        image = ImageProcessing()
         image.load_image(Path("tests/img/sudoku1.png"))
         image.resize()
         image.thresholding()
         image.adjust_perspective_to_specific_zone(zone)
-        image_to_compare_with = ImageOcr()
+        image_to_compare_with = ImageProcessing()
         image_to_compare_with.load_image(
             Path("tests/img/sudoku1_test_adjust_perspective.png")
         )

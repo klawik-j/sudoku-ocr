@@ -1,5 +1,7 @@
 """Image processing."""
 
+import logging
+
 from cv2 import (
     ADAPTIVE_THRESH_GAUSSIAN_C,
     CHAIN_APPROX_SIMPLE,
@@ -28,6 +30,8 @@ from skimage.segmentation import clear_border
 
 from sudoku_ocr.image import WAIT_TIME, Image
 
+logging = logging.getLogger(__name__)
+
 
 class ImageProcessing(Image):
     """ImageProcessing class."""
@@ -50,6 +54,7 @@ class ImageProcessing(Image):
         )
         inverse = bitwise_not(thresh)
         self.data = inverse
+        logging.debug("Thresholding successful.")
 
     def get_contours(self) -> ndarray:
         """Get contours present in image."""
@@ -59,6 +64,7 @@ class ImageProcessing(Image):
             CHAIN_APPROX_SIMPLE,
         )
         contours = grab_contours(contours)
+        logging.debug(f"Found {len(contours)} contours.")
         return sorted(contours, key=contourArea, reverse=True)
 
     @staticmethod
@@ -71,17 +77,20 @@ class ImageProcessing(Image):
                 True,
             )
             if len(approx) == 4:
+                logging.debug(f"Largest rectangle contours are:\n {approx}")
                 return approx
         raise Exception("Largest rectangle have not been found.")
 
     def adjust_perspective_to_specific_zone(self, zone: ndarray) -> None:
         """Adjust perspective to specific zone."""
         self.data = four_point_transform(self.data, zone.reshape(4, 2))
+        logging.debug(f"Perspective adjusted to zone:\n {zone}")
 
     def improve_data_quality(self) -> None:
         """Improve image data quality for better ocr."""
         blurred = GaussianBlur(self.data, (7, 7), 1)
         self.data = clear_border(blurred)
+        logging.debug("Data quality have been improved.")
 
     def is_empty(self, threshold: int = 5) -> bool:
         """Determine if data does not contain any information."""
@@ -91,8 +100,10 @@ class ImageProcessing(Image):
         count_white = countNonZero(mask)
         percent_white = count_white * 100 / number_of_pixels
         if percent_white < threshold:
+            logging.debug(f"Empty: TRUE with {percent_white} white pixels.")
             return True
         else:
+            logging.debug(f"Empty: FALSE with {percent_white} white pixels.")
             return False
 
     def show_with_contours(self, contours: ndarray) -> None:

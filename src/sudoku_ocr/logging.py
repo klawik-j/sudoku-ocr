@@ -13,7 +13,6 @@ def setup_logging(level: int = None) -> None:
     if level is None:
         level = logging.INFO
     level_name = logging.getLevelName(level)
-    print(level)
 
     config = {
         "version": 1,
@@ -23,7 +22,7 @@ def setup_logging(level: int = None) -> None:
                 "format": "%(message)s",
             },
             "extended": {
-                "format": "%(asctime)s - %(thread)s - %(name)s - %(levelname)s - %(messages)s",
+                "format": "%(asctime)s - %(thread)s - %(name)s - %(levelname)s - %(message)s",
             },
         },
         "handlers": {

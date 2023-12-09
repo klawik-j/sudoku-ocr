@@ -1,5 +1,6 @@
 """Image properties."""
 
+import logging
 from os.path import isfile
 from pathlib import Path
 
@@ -8,6 +9,8 @@ from imutils import resize
 from numpy import ndarray
 
 WAIT_TIME = 2000
+
+logging = logging.getLogger(__name__)
 
 
 class Image:
@@ -25,14 +28,17 @@ class Image:
         else:
             self._data = imread(str(path))
             self._path = path
+            logging.debug("Image loaded successful.")
 
     def save(self, path: Path) -> None:
         """Save image to file."""
         imwrite(path, self.data)
+        logging.info(f"Image successful saved to path {path}")
 
     def resize(self, width: int = 600) -> None:
         """Resize image to desire width."""
         self.data = resize(self.data, width=width)
+        logging.debug(f"Image resized to width: {width}.")
 
     def show(self) -> None:
         """Show visual representation of image on screen."""

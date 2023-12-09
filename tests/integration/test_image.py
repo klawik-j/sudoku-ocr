@@ -27,8 +27,20 @@ class TestImage:
         image.resize()
         assert image.data.shape[1] == 600
 
-    def test_resize_image_custom_value(self) -> None:
+    def test_resize_image_custom_width_value(self) -> None:
         image = Image()
         image.load_image(Path("tests/img/no_sudoku2.jpg"))
         image.resize(width=500)
         assert image.data.shape[1] == 500
+
+    # TODO
+    def test_resize_image_custom_heigh_value(self) -> None:
+        pass
+
+    # TODO
+    def test_crop(self) -> None:
+        pass
+
+    # TODO
+    def test_get_cropped(self) -> None:
+        pass

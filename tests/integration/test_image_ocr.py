@@ -36,3 +36,15 @@ class TestImageOcr:
         image_to_compare_with = cvtColor(image_to_compare_with.data, COLOR_BGR2GRAY)
 
         assert (image.data == image_to_compare_with.data).all()
+
+    # TODO
+    def test_improve_data_quality(self) -> None:
+        pass
+
+    # TODO
+    def test_is_empty_true(self) -> None:
+        pass
+
+    # TODO
+    def test_is_empty_false(self) -> None:
+        pass

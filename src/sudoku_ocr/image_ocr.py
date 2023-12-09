@@ -4,18 +4,22 @@ from cv2 import (
     CHAIN_APPROX_SIMPLE,
     COLOR_GRAY2BGR,
     RETR_EXTERNAL,
+    GaussianBlur,
     approxPolyDP,
     arcLength,
     contourArea,
+    countNonZero,
     cvtColor,
     drawContours,
     findContours,
     imshow,
+    inRange,
     waitKey,
 )
 from imutils import grab_contours
 from imutils.perspective import four_point_transform
 from numpy import ndarray
+from skimage.segmentation import clear_border
 
 from sudoku_ocr.image import WAIT_TIME, Image, ImageAdapter
 
@@ -66,6 +70,23 @@ class ImageOcr(Image, ImageOcrAdapter):
     def adjust_perspective_to_specific_zone(self, zone: ndarray) -> None:
         """Adjust perspective to specific zone."""
         self.data = four_point_transform(self.data, zone.reshape(4, 2))
+
+    def improve_data_quality(self) -> None:
+        """Improve image data quality for better ocr."""
+        blurred = GaussianBlur(self.data, (7, 7), 1)
+        self.data = clear_border(blurred)
+
+    def is_empty(self, threshold: int = 5) -> bool:
+        """Determine if data does not contain any information."""
+        mask = inRange(self.data, 254, 255)
+        height, width = mask.shape[:2]
+        number_of_pixels = height * width
+        count_white = countNonZero(mask)
+        percent_white = count_white * 100 / number_of_pixels
+        if percent_white < threshold:
+            return True
+        else:
+            return False
 
     def show_with_contours(self, contours: ndarray) -> None:
         """Show image with contours marked."""

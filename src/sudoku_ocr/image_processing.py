@@ -1,12 +1,17 @@
 """Image processing."""
 
 from cv2 import (
+    ADAPTIVE_THRESH_GAUSSIAN_C,
     CHAIN_APPROX_SIMPLE,
+    COLOR_BGR2GRAY,
     COLOR_GRAY2BGR,
     RETR_EXTERNAL,
+    THRESH_BINARY,
     GaussianBlur,
+    adaptiveThreshold,
     approxPolyDP,
     arcLength,
+    bitwise_not,
     contourArea,
     countNonZero,
     cvtColor,
@@ -30,6 +35,21 @@ class ImageProcessing(Image):
     def __init__(self) -> None:
         """Initialize ImageProcessing class."""
         super().__init__()
+
+    def thresholding(self) -> None:
+        """Apply thresholding on image."""
+        grayscale = cvtColor(self.data, COLOR_BGR2GRAY)
+        blurred = GaussianBlur(grayscale, (7, 7), 3)
+        thresh = adaptiveThreshold(
+            blurred,
+            255,
+            ADAPTIVE_THRESH_GAUSSIAN_C,
+            THRESH_BINARY,
+            11,
+            2,
+        )
+        inverse = bitwise_not(thresh)
+        self.data = inverse
 
     def get_contours(self) -> ndarray:
         """Get contours present in image."""

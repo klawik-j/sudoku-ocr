@@ -7,6 +7,28 @@ from sudoku_ocr.image_processing import ImageProcessing
 
 
 class TestImageProcessing:
+    def test_thresholding(self) -> None:
+        image = ImageProcessing()
+        image.load_image(Path("tests/img/sudoku1.png"))
+        image.resize(10)
+        image.thresholding()
+        proper_data = [
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 0, 0, 255, 255, 255, 255],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        assert (image.data == proper_data).all()
+
     # TODO
     def test_get_contours(self) -> None:
         pass

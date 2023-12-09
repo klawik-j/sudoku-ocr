@@ -3,19 +3,7 @@
 from os.path import isfile
 from pathlib import Path
 
-from cv2 import (
-    ADAPTIVE_THRESH_GAUSSIAN_C,
-    COLOR_BGR2GRAY,
-    THRESH_BINARY,
-    GaussianBlur,
-    adaptiveThreshold,
-    bitwise_not,
-    cvtColor,
-    imread,
-    imshow,
-    imwrite,
-    waitKey,
-)
+from cv2 import imread, imshow, imwrite, waitKey
 from imutils import resize
 from numpy import ndarray
 
@@ -45,21 +33,6 @@ class Image:
     def resize(self, width: int = 600) -> None:
         """Resize image to desire width."""
         self.data = resize(self.data, width=width)
-
-    def thresholding(self) -> None:
-        """Apply thresholding on image."""
-        grayscale = cvtColor(self.data, COLOR_BGR2GRAY)
-        blurred = GaussianBlur(grayscale, (7, 7), 3)
-        thresh = adaptiveThreshold(
-            blurred,
-            255,
-            ADAPTIVE_THRESH_GAUSSIAN_C,
-            THRESH_BINARY,
-            11,
-            2,
-        )
-        inverse = bitwise_not(thresh)
-        self.data = inverse
 
     def show(self) -> None:
         """Show visual representation of image on screen."""

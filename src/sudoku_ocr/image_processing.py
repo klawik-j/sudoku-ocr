@@ -30,7 +30,7 @@ from skimage.segmentation import clear_border
 
 from sudoku_ocr.image import WAIT_TIME, Image
 
-logging = logging.getLogger(__name__)
+logging = logging.getLogger(__name__)  # type: ignore
 
 
 class ImageProcessing(Image):
@@ -88,8 +88,7 @@ class ImageProcessing(Image):
 
     def improve_data_quality(self) -> None:
         """Improve image data quality for better ocr."""
-        blurred = GaussianBlur(self.data, (7, 7), 1)
-        self.data = clear_border(blurred)
+        self.data = clear_border(self.data)
         logging.debug("Data quality have been improved.")
 
     def is_empty(self, threshold: int = 5) -> bool:
@@ -100,10 +99,10 @@ class ImageProcessing(Image):
         count_white = countNonZero(mask)
         percent_white = count_white * 100 / number_of_pixels
         if percent_white < threshold:
-            logging.debug(f"Empty: TRUE with {percent_white} white pixels.")
+            logging.debug(f"Empty: TRUE with {percent_white}% white pixels.")
             return True
         else:
-            logging.debug(f"Empty: FALSE with {percent_white} white pixels.")
+            logging.debug(f"Empty: FALSE with {percent_white}% white pixels.")
             return False
 
     def show_with_contours(self, contours: ndarray) -> None:

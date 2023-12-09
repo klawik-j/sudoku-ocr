@@ -10,7 +10,7 @@ from numpy import ndarray
 
 WAIT_TIME = 2000
 
-logging = logging.getLogger(__name__)
+logging = logging.getLogger(__name__)  # type: ignore
 
 
 class Image:
@@ -35,10 +35,23 @@ class Image:
         imwrite(path, self.data)
         logging.info(f"Image successful saved to path {path}")
 
-    def resize(self, width: int = 600) -> None:
+    def resize(self, width: int = 600, height: int = None) -> None:
         """Resize image to desire width."""
-        self.data = resize(self.data, width=width)
+        if height:
+            self.data = resize(self.data, width=width, height=height)
+        else:
+            self.data = resize(self.data, width=width)
         logging.debug(f"Image resized to width: {width}.")
+
+    def crop(self, x_start: int, x_end: int, y_start: int, y_end: int) -> None:
+        """Crop image."""
+        self.data = self.data[y_start:y_end, x_start:x_end]
+
+    def get_cropped(
+        self, x_start: int, x_end: int, y_start: int, y_end: int
+    ) -> ndarray:
+        """Get cropped image."""
+        return self.data[y_start:y_end, x_start:x_end]
 
     def show(self) -> None:
         """Show visual representation of image on screen."""
